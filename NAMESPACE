@@ -1,0 +1,6 @@
+useDynLib(bsml)
+S3method(print,bsml)
+S3method(print,summary.bsml)
+S3method(predict,bsml)
+S3method(summary,bsml)
+export(bsml,has,bsmlc,bsmls,stdz,bas.check,control.bsml)

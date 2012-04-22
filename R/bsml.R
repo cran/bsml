@@ -1,7 +1,7 @@
 ###########################################
 # Basis Selection from Multiple Libraries #
-# Updated May 11 2011					  #
-# Version 1.5-0                           #
+# Updated Apr 22 2012					  #
+# Version 1.5-1                           #
 ###########################################
 
 bsml <- function(y,baseslist,method="bsmlc",maxbas=30,
@@ -125,7 +125,7 @@ return(bsuml)
 }
 
 
-predict.bsml <- function(object, bases.include=NULL, new.baseslist=NULL, confint=F, alpha=0.05, alg="a", addbas="cv", ...)
+predict.bsml <- function(object, bases.include=NULL, new.baseslist=NULL, confint=F, alpha=0.05, alg="a", addbas="cv", bootrep=200, ...)
 {
 if (is.null(object$chosen.bases.matrix)) warning("Null model is the best model.","\n")
 baseslist=new.baseslist
@@ -209,8 +209,8 @@ fit=fit.null+fit.chosen
 if (confint==F) return(fit)
 
 unbiasedsigma=sqrt(object$sigma_sq)
-if (object$approach=="gdf") control=list(gdf.control=list(tauhat=unbiasedsigma))
-else if (object$approach=="covpen") control=list(covpen.control=list(tauhat=unbiasedsigma))
+if (object$approach=="gdf") control=list(gdf.control=list(tauhat=0.5*unbiasedsigma,nrep=bootrep))
+else if (object$approach=="covpen") control=list(covpen.control=list(tauhat=0.5*unbiasedsigma,nboot=bootrep))
 else control=NULL
 ctrl.vals <- object$control
 if (!is.null(control)) {
@@ -241,7 +241,7 @@ afits=initfit$allfits
 alist<-allfits<-NULL
 if (initfit$method=="bsmls") {
 	for (i in 1:dim(initfit$allisb)[3]) {
-	modelsize=nrow(initfit$chosen.bases.trim)
+	modelsize=nrow(object$chosen.bases.trim)
 	tofit=rbind(initfit$chosen.bases.trim[-modelsize,],initfit$allisb[,,i][modelsize,])
 	alist[[i]]=tofit
 	onefit=pdt(initfit,bases.include,new.baseslist,tofit,(unbiasedfit+initfit$ptb[,i]))
@@ -251,7 +251,7 @@ if (initfit$method=="bsmls") {
 	upper=apply(allfits,1,quantile,prob=1-alpha/2,na.rm=T)
 } else {
 	for (i in 1:dim(initfit$allisb)[3]) {
-	modelsize=nrow(initfit$chosen.bases.trim)
+	modelsize=nrow(object$chosen.bases.trim)
 	tofit=initfit$allisb[,,i][1:modelsize,]
 	alist[[i]]=tofit
 	onefit=pdt(initfit,bases.include,new.baseslist,tofit,(unbiasedfit+initfit$ptb[,i]))
@@ -272,7 +272,9 @@ alist<-allfits<-NULL
 if (initfit$method=="bsmls") {
 	for (i in 1:dim(initfit$allisb)[3]) {
 	fitall=initfit$allfits[,,i]
-	scores=apply((fitall-unbiasedfit)^2,2,sum)/length(object$y)
+	alldiff=NULL
+	for (j in ncol(fitall)) alldiff=cbind(alldiff,fitall[,j]-unbiasedfit)
+	scores=apply(alldiff^2,2,sum)/length(object$y)
 	scores=scores[(object$lib.size[1]+1):length(scores)]
 	modelsize=order(scores)[1]
 	tofit=rbind(initfit$chosen.bases.full[1:(modelsize-1),],initfit$allisb[,,i][modelsize,])
@@ -285,7 +287,9 @@ if (initfit$method=="bsmls") {
 } else {
 	for (i in 1:dim(initfit$allisb)[3]) {
 	fitall=initfit$allfits[,,i]
-	scores=apply((fitall-unbiasedfit)^2,2,sum)/length(object$y)
+	alldiff=NULL
+	for (j in ncol(fitall)) alldiff=cbind(alldiff,fitall[,j]-unbiasedfit)
+	scores=apply(alldiff^2,2,sum)/length(object$y)
 	scores=scores[(object$lib.size[1]+1):length(scores)]
 	modelsize=order(scores)[1]
 	tofit=initfit$allisb[,,i][1:modelsize,]
@@ -312,8 +316,13 @@ if (is.null(baseslist)) baseslist=object$baseslist
 options(warn=-1)
 bc=bases.chosen
 fm=object$null.bases.matrix
-for (i in 1:nrow(bc)) {
-fm=cbind(fm,object$baseslist[[bc[i,1]]][,bc[i,2]])
+if (ncol(bc)>1) {
+  for (i in 1:nrow(bc)) {
+    fm=cbind(fm,object$baseslist[[bc[i,1]]][,bc[i,2]])
+  }
+}
+if (ncol(bc)==1) {
+  fm=cbind(fm,object$baseslist[[bc[1]]][,bc[2]])
 }
 new.obj=glm(y~fm-1)
 

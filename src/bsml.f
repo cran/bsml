@@ -1174,7 +1174,7 @@ c
 c $Header: dcfcr1.f,v 2.100.1.1 86/10/07 12:47:31 lindstrom Exp $
 c
       integer i,j,nmnct,nctp1,locinf
-      double precision dummy,machpr,one,rcond
+      double precision dummy(1),machpr,one,rcond
       double precision ddot
 c
       info = 0
@@ -1338,7 +1338,7 @@ c	Blas    - dswap
 c
 c $Header: dcrtz.f,v 2.100.1.1 86/10/07 12:47:59 lindstrom Exp $
 c
-      double precision dummy
+      double precision dummy(1)
       integer i,locinf
 c
       info = 0
@@ -1414,11 +1414,11 @@ c	Blas    - dcopy
 c
 c $Header: dctsx.f,v 2.100.1.1 86/10/07 12:48:06 lindstrom Exp $
 c
-      double precision dummy
-      integer i,locinf
+      double precision dummy(1)
+      integer i,locinf,idummy(1)
 c
       npar = nb + ncov2
-      call dqrdc(tbsb1,ldtbsb,nb,ncts1,fgaux,0,0.0d0,0)
+      call dqrdc(tbsb1,ldtbsb,nb,ncts1,fgaux,idummy,dummy,0)
 c			calculate k f2  put in last nb -ncts1 columns 
 c			of x
       do 10 i=1,nobs 
@@ -1678,7 +1678,7 @@ c	Blas    - dcopy
 c
 c $Header: dftkf.f,v 2.100.1.1 86/10/07 12:48:38 lindstrom Exp $
 c
-      double precision dummy
+      double precision dummy(1)
       integer i,locinf
 c	  		calculate k f, store in kk
       do 10 i=1,nrf 
@@ -2591,7 +2591,7 @@ c
 c $Header: dpmse.f,v 2.100.1.1 86/10/07 12:51:29 lindstrom Exp $
 c
       integer i,nmh,k,locinf
-      double precision dummy,nlam,wrk1,addtru,wrk
+      double precision dummy(1),nlam,wrk1,addtru,wrk
       double precision ddot
 c
       nmh = nuobs - nnull
@@ -2958,7 +2958,7 @@ c	Other 	- dcpmut dprmut dset dftkf fact mkpoly
 c
 c $Header: dptpss.f,v 2.100.1.2 86/11/21 12:22:18 lindstrom Exp $
 c
-      double precision dummy,dout2(5)
+      double precision dummy(1),dout2(5)
       integer i,ncts1,jadiag,p1,p1p1,p2,p2p1,p3,p3p1,p4,p4p1,p5,p5p1,
      * ip1,ip1p1,ip2,ip2p1,nuobs,lwa2,liwa2,npoly,nnull,snnpar,q1,
      * wsize,lwa1,sinfo,ldx,iout2(4)
@@ -3366,7 +3366,8 @@ c
 c $Header: dsetup.f,v 2.100.1.1 86/10/07 12:55:48 lindstrom Exp $
 c
       integer npoly,i,j
-      integer mkpoly
+      integer mkpoly,idummy(1)
+	  double precision dummy(1)
 c
       info = 0
       npoly=mkpoly(m,dim)
@@ -3389,7 +3390,7 @@ c			make [tu:su1] and ku
    30    continue
       endif
 c			decompose [tu:su1] into fg
-      call dqrdc(tusu1,ldtu,nuobs,ncts1,fgaux,0,0.0d0,0)
+      call dqrdc(tusu1,ldtu,nuobs,ncts1,fgaux,idummy,dummy,0)
 c      			calculate f'ku f
       call dftkf(tusu1,ldtu,nuobs,ncts1,fgaux,ku,ldku,work)
       return
@@ -3428,8 +3429,8 @@ c	Other   - dset
 c
 c $Header: dsgdc.f,v 2.100.1.1 86/10/07 12:56:05 lindstrom Exp $
 c
-      integer locinf,i,j,nsm,idummy
-      double precision dummy,machpr,one
+      integer locinf,i,j,nsm,idummy(1)
+      double precision dummy(1),machpr,one
 c
 c
       info = 0
@@ -3509,7 +3510,7 @@ c
 c $Header: dsgdc1.f,v 2.100.1.1 86/10/07 12:56:12 lindstrom Exp $
 c
       integer i,j,pp1,locinf,k
-      double precision dummy,one,machpr
+      double precision dummy(1,1),one,machpr
 c
       info = 0
       if (lwa .lt. 2*p) then
@@ -4648,8 +4649,8 @@ c	Other   - dset dprmut dswap
 c
 c $Header: dzdc.f,v 2.100.1.1 86/10/07 13:00:03 lindstrom Exp $
 c
-      double precision dummy,machpr,one,minrat
-      integer i,j,idummy,nnull,hp1,nmh,pmhp1,wsize,locinf
+      double precision dummy(1),machpr,one,minrat
+      integer i,j,idummy(1),nnull,hp1,nmh,pmhp1,wsize,locinf
 c
       info = 0
 c

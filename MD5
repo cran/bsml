@@ -1,0 +1,13 @@
+9dfbd6dc776924e87428a4af144ea4c1 *DESCRIPTION
+d65b4ebd53b129c40cd03bc336f1742c *NAMESPACE
+9d01631919254060f25d9d70552d5990 *R/bsml.R
+4b2479bdeebafc1c2e93ada35103c3ee *man/bas.check.Rd
+a4dc74c2f8b334268b3ff08e8b79aa4d *man/bsml.Rd
+80ddf123ebf2fc59ed66d7c0e46d8c3d *man/bsmlc.Rd
+d7036f4c8d1fad19201c33961b2cdb14 *man/bsmls.Rd
+073643a4c596b7103bd35761e9fd1b6e *man/control.bsml.Rd
+c18821d00c26fa808e141b119b64a0ca *man/has.Rd
+ad420cf242eaea061ef23954d14e4520 *man/predict.bsml.Rd
+460ef5f8dead025e3eab6fbb11cdb299 *man/stdz.Rd
+a92e99ca8efdbc93ea661e32abffe3e0 *man/summary.bsml.Rd
+f8183d4e45cdd4d93cbeb6e0caf3eb9f *src/bsml.f

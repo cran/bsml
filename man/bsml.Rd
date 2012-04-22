@@ -1,6 +1,6 @@
 \name{bsml}
 \alias{bsml}
-\title{ Basis Selection from Multiple Libraries Ver. 1.5-0 }
+\title{ Basis Selection from Multiple Libraries Ver. 1.5-1 }
 \description{
   This is the implementation of the namesake methodology. To fit a nonparametric or semiparametric regression model, multiple libraries may be used to approximate the mean function. The program will adaptively select basis functions from each library and find the optimal model complexity by using the Generalized Degrees of Freedom or Covariance Penalty.
 }

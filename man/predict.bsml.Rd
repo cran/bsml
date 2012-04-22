@@ -5,7 +5,7 @@
   This function can be used to make predictions using the output objects from HAS, BSML-C and BSML-S. Confidence intervals can also be obtained using this function.
 }
 \usage{
-\method{predict}{bsml}(object, bases.include=NULL, new.baseslist=NULL, confint=F, alpha=0.05, alg="a", addbas="cv", ...)
+\method{predict}{bsml}(object, bases.include=NULL, new.baseslist=NULL, confint=F, alpha=0.05, alg="a", addbas="cv", bootrep=200, ...)
 }
 \arguments{
   \item{object}{ Output object from HAS, BSML-C OR BSML-S. }
@@ -15,6 +15,7 @@
   \item{alpha}{ Level of significance. The default value is 0.05. }
   \item{alg}{ Algorithm to use. There are two options: "a" or "b", both of which use bootstrap. Algorithm "a" (default) uses models with the same number of basis functions as that for the final model for the perturbed responses in the Monte Carlo simulation. Algorithm "b" finds the optimal model size using MSE for the perturbed responses and starts with a "big" model that can be adjusted by the "addbas" argument also described here. }
   \item{addbas}{ Used with alg="b" only. Number of basis to be added to the initial fit to creat a "big" model. It can be a number or "cv" (default), when the CV approach is used to identify a "big" model. }
+  \item{bootrep}{ Number of bootstrapping iterations. }
   \item{\dots}{ Not used. }
 }
 \value{
